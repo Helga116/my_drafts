@@ -7,9 +7,9 @@ console.log(notesPath)
 
 async function removeNote(id) {
     const notes = await getNotes()
-    notes.filter(note => note.id !== id)
-    await fs.writeFile(notesPath, JSON.stringify(notes))
-    notes.forEach(note => {
+    const filteredNotes = notes.filter(note => note.id !== id)
+    await fs.writeFile(notesPath, JSON.stringify(filteredNotes))
+    filteredNotes.forEach(note => {
         console.log(chalk.green.inverse(note.id))
     })
     console.log("text was deleted")
@@ -17,7 +17,6 @@ async function removeNote(id) {
 
 async function addNote(title) {
     const notes = await getNotes()
-    // const notes = require('./db.json')
     const note = {
         title,
         id: Date.now().toString()

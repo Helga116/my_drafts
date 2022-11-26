@@ -13,21 +13,21 @@ yargs.command({
             demandOption: true
         }
     },
-    handler({title}) {
-        addNote(title)
+    async handler({title}) {
+        await addNote(title)
     }
 })
 
 yargs.command({
     command: 'list',
     describe: 'Print all notes',
-    builder: {
-        title: {
-            type: "string",
-            describe: "Note title",
-            demandOption: true
-        }
-    },
+    // builder: {
+    //     title: {
+    //         type: "string",
+    //         describe: "Note title",
+    //         demandOption: true
+    //     }
+    // },
     async handler() {
         const notes = await printNotes()
         console.log(notes)
