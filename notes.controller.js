@@ -3,7 +3,6 @@ const path = require('path')
 const chalk = require('chalk')
 
 const notesPath = path.join(__dirname, 'db.json')
-console.log(notesPath)
 
 async function removeNote(id) {
     const notes = await getNotes()
@@ -13,6 +12,17 @@ async function removeNote(id) {
         console.log(chalk.green.inverse(note.id))
     })
     console.log("text was deleted")
+}
+async function updateNote(id, title) {
+    const notes = await getNotes()
+    const updatedNotes = notes.reduce((acc, note) => {
+        if (note.id === id) {
+            return [...acc, { ...note, title }];
+        }
+        return [...acc, note];
+    }, []);
+    await fs.writeFile(notesPath, JSON.stringify(updatedNotes))
+    console.log(chalk.bgGreen('text was updated'))
 }
 
 async function addNote(title) {
@@ -30,6 +40,7 @@ async function addNote(title) {
 async function getNotes() {
     const notes = await fs.readFile(notesPath, 'utf-8')
     return Array.isArray(JSON.parse(notes)) ?  JSON.parse(notes) : []
+
 }
 
 async function printNotes() {
@@ -41,5 +52,5 @@ async function printNotes() {
 }
 
 module.exports = {
-    addNote, printNotes, removeNote
+    addNote, getNotes, removeNote, updateNote
 }
